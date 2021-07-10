@@ -36,7 +36,8 @@ static u8 bgcolor;
 
 void Screen::setPalette(const Color *palette)
 {
-	if (mPalette == palette) return;
+	//if (mPalette == palette) return;
+	/* Comment above line(line39) for fixing little issue on color setting Escape sequences */
 	mPalette = palette;
 
 	for (u32 i = 0; i < NR_COLORS; i++) {
