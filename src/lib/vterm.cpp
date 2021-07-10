@@ -68,13 +68,13 @@ u8 VTerm::control_map[MAX_CONTROL_CODE], VTerm::escape_map[NR_STATES][MAX_ESCAPE
 
 void VTerm::init_state()
 {
-	for (u8 i = 1; control_sequences[i].code != (u16)-1; i++) {
+	for (u8 i = 1; control_sequences[i].code != (u16)0xFFFF; i++) {
 		control_map[control_sequences[i].code] = i;
 	}
 
 	u8 state = ESnormal;
 	for (u8 i = 1; ; i++) {
-		if (escape_sequences[i].code == (u16)-1) {
+		if (escape_sequences[i].code == (u16)0xFFFF) {
 			state++;
 			if (state == NR_STATES) break;
 		} else {
@@ -445,7 +445,7 @@ void VTerm::do_normal_char()
 		changed_line(cursor_y, cursor_x, width - 1);
 
 		u16 step = dw ? 2 : 1;
-		for (u16 i = width - step - 1; i >= cursor_x; i--) {
+		for (s32 i = width - step - 1; i >= cursor_x; i--) {
 			text[yp + i + step] = text[yp + i];
 			attrs[yp + i + step] = attrs[yp + i];
 		}
