@@ -21,6 +21,7 @@
 
 #include <string.h>
 #include "vterm.h"
+#include "wcwidth.h"
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
@@ -831,4 +832,10 @@ u16 VTerm::get_line(u16 y)
 	if (line >= total_history_lines()) return linenumbers[line - total_history_lines()];
 
 	return ((history_full ? history_save_line : 0) + line) % history_lines;
+}
+
+bool VTerm::ambiguous_wide = false;
+s32 VTerm::charWidth(u32 ucs) {
+    // now the option "ambiguous wide" is ignored
+    return wcwidth(ucs);
 }

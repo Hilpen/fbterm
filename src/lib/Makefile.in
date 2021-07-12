@@ -110,7 +110,7 @@ libshell_a_LIBADD =
 am_libshell_a_OBJECTS = libshell_a-io.$(OBJEXT) \
 	libshell_a-shell.$(OBJEXT) libshell_a-vterm_action.$(OBJEXT) \
 	libshell_a-vterm.$(OBJEXT) libshell_a-vterm_states.$(OBJEXT) \
-	libshell_a-wcwidth.$(OBJEXT) libshell_a-charsetmap.$(OBJEXT)
+	wcwidth.$(OBJEXT) libshell_a-charsetmap.$(OBJEXT)
 libshell_a_OBJECTS = $(am_libshell_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -131,9 +131,20 @@ am__depfiles_remade = ./$(DEPDIR)/libshell_a-charsetmap.Po \
 	./$(DEPDIR)/libshell_a-io.Po ./$(DEPDIR)/libshell_a-shell.Po \
 	./$(DEPDIR)/libshell_a-vterm.Po \
 	./$(DEPDIR)/libshell_a-vterm_action.Po \
-	./$(DEPDIR)/libshell_a-vterm_states.Po \
-	./$(DEPDIR)/libshell_a-wcwidth.Po
+	./$(DEPDIR)/libshell_a-vterm_states.Po ./$(DEPDIR)/wcwidth.Po
 am__mv = mv -f
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_@AM_V@)
+am__v_CC_ = $(am__v_CC_@AM_DEFAULT_V@)
+am__v_CC_0 = @echo "  CC      " $@;
+am__v_CC_1 = 
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_@AM_V@)
+am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
+am__v_CCLD_0 = @echo "  CCLD    " $@;
+am__v_CCLD_1 = 
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -151,18 +162,6 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-AM_V_CC = $(am__v_CC_@AM_V@)
-am__v_CC_ = $(am__v_CC_@AM_DEFAULT_V@)
-am__v_CC_0 = @echo "  CC      " $@;
-am__v_CC_1 = 
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-AM_V_CCLD = $(am__v_CCLD_@AM_V@)
-am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
-am__v_CCLD_0 = @echo "  CCLD    " $@;
-am__v_CCLD_1 = 
 SOURCES = $(libshell_a_SOURCES)
 DIST_SOURCES = $(libshell_a_SOURCES)
 am__can_run_installinfo = \
@@ -302,12 +301,12 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libshell.a
-libshell_a_SOURCES = io.cpp io.h shell.cpp shell.h vterm_action.cpp vterm.cpp vterm_states.cpp vterm.h type.h instance.h wcwidth.cpp charsetmap.cpp
+libshell_a_SOURCES = io.cpp io.h shell.cpp shell.h vterm_action.cpp vterm.cpp vterm_states.cpp vterm.h type.h instance.h wcwidth.c wcwidth.h charsetmap.cpp
 libshell_a_CXXFLAGS = -fno-exceptions -fno-rtti
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .cpp .o .obj
+.SUFFIXES: .c .cpp .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -358,13 +357,27 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-vterm.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-vterm_action.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-vterm_states.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-wcwidth.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wcwidth.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
 	@echo '# dummy' >$@-t && $(am__mv) $@-t $@
 
 am--depfiles: $(am__depfiles_remade)
+
+.c.o:
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
+
+.c.obj:
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -449,20 +462,6 @@ libshell_a-vterm_states.obj: vterm_states.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='vterm_states.cpp' object='libshell_a-vterm_states.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshell_a_CXXFLAGS) $(CXXFLAGS) -c -o libshell_a-vterm_states.obj `if test -f 'vterm_states.cpp'; then $(CYGPATH_W) 'vterm_states.cpp'; else $(CYGPATH_W) '$(srcdir)/vterm_states.cpp'; fi`
-
-libshell_a-wcwidth.o: wcwidth.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshell_a_CXXFLAGS) $(CXXFLAGS) -MT libshell_a-wcwidth.o -MD -MP -MF $(DEPDIR)/libshell_a-wcwidth.Tpo -c -o libshell_a-wcwidth.o `test -f 'wcwidth.cpp' || echo '$(srcdir)/'`wcwidth.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libshell_a-wcwidth.Tpo $(DEPDIR)/libshell_a-wcwidth.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='wcwidth.cpp' object='libshell_a-wcwidth.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshell_a_CXXFLAGS) $(CXXFLAGS) -c -o libshell_a-wcwidth.o `test -f 'wcwidth.cpp' || echo '$(srcdir)/'`wcwidth.cpp
-
-libshell_a-wcwidth.obj: wcwidth.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshell_a_CXXFLAGS) $(CXXFLAGS) -MT libshell_a-wcwidth.obj -MD -MP -MF $(DEPDIR)/libshell_a-wcwidth.Tpo -c -o libshell_a-wcwidth.obj `if test -f 'wcwidth.cpp'; then $(CYGPATH_W) 'wcwidth.cpp'; else $(CYGPATH_W) '$(srcdir)/wcwidth.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libshell_a-wcwidth.Tpo $(DEPDIR)/libshell_a-wcwidth.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='wcwidth.cpp' object='libshell_a-wcwidth.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshell_a_CXXFLAGS) $(CXXFLAGS) -c -o libshell_a-wcwidth.obj `if test -f 'wcwidth.cpp'; then $(CYGPATH_W) 'wcwidth.cpp'; else $(CYGPATH_W) '$(srcdir)/wcwidth.cpp'; fi`
 
 libshell_a-charsetmap.o: charsetmap.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshell_a_CXXFLAGS) $(CXXFLAGS) -MT libshell_a-charsetmap.o -MD -MP -MF $(DEPDIR)/libshell_a-charsetmap.Tpo -c -o libshell_a-charsetmap.o `test -f 'charsetmap.cpp' || echo '$(srcdir)/'`charsetmap.cpp
@@ -608,7 +607,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/libshell_a-vterm.Po
 	-rm -f ./$(DEPDIR)/libshell_a-vterm_action.Po
 	-rm -f ./$(DEPDIR)/libshell_a-vterm_states.Po
-	-rm -f ./$(DEPDIR)/libshell_a-wcwidth.Po
+	-rm -f ./$(DEPDIR)/wcwidth.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -660,7 +659,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/libshell_a-vterm.Po
 	-rm -f ./$(DEPDIR)/libshell_a-vterm_action.Po
 	-rm -f ./$(DEPDIR)/libshell_a-vterm_states.Po
-	-rm -f ./$(DEPDIR)/libshell_a-wcwidth.Po
+	-rm -f ./$(DEPDIR)/wcwidth.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
